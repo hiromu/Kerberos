@@ -1,0 +1,18 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h3>本当に「タスク: {{ task['camp_name'] }} / #{{ task['task_id'] }}」を削除しますか？</h3>
+
+{% if error != '' %}
+<div class="alert alert-danger">{{ error }}</div>
+{% end %}
+
+<form method="POST">
+    <div class="form-group">
+        <button class="btn btn-danger" name="delete" value="true">はい</button>
+        <a href="{{ reverse_url('TeamIndex', task['camp_id']) }}" class="btn btn-default">いいえ</a>
+    </div>
+</form>
+
+{% end block %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <title>Project Kerberos</title>
+        <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('css/base.css') }}" />
+        <link rel="stylesheet" href="{{ static_url('css/custom.css') }}" />
+        <script src="{{ static_url('js/jquery-2.1.4.min.js') }}"></script>
+        <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header clearfix">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation"><a href="{{ reverse_url(r'CampIndex') }}">Home</a></li>
+                    </ul>
+                </nav>
+                <h3 class="text-muted">Project Kerberos</h3>
+            </div>
+            <div class="contents">
+                {% block contents %}
+                {% end %}
+            </div>
+            <footer class="footer">
+                <p>&copy; Hiromu Yakura 2015</p>
+            </footer>
+        </div>
+    </body>
+</html>

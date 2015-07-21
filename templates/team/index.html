@@ -1,0 +1,28 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h2 class="pull-left">{{ camp['name'] }}: チーム一覧</h2>
+<div class="pull-right add-button">
+    <a class="btn btn-warning" href="{{ reverse_url('TaskAdd', camp['id']) }}">動画生成</a>
+    <a class="btn btn-info" href="{{ reverse_url('TeamAdd', camp['id']) }}">追加</a>
+</div>
+<table class="table table-hover">
+    <tbody>
+        {% for team in teams %}
+        <tr>
+            <td class="vert-align">{{ team['name'] }}</td>
+            <td>
+                <a class="btn btn-danger" href="{{ reverse_url('TeamDelete', team['id']) }}" role="button">削除</a>
+            </td>
+            <td>
+                <a class="btn btn-primary" href="{{ reverse_url('MovieIndex', team['id']) }}" role="button">詳細</a>
+            </td>
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+
+{% module Template('tasks.html', tasks = tasks) %}
+
+{% end block %}

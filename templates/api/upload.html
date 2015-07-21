@@ -1,0 +1,33 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% if team != None %}
+    <h3>チーム: {{ team['name'] }}への動画アップロード</h3>
+    {% end %}
+
+    {% if teams != None %}
+    <div class="form-group">
+        <select class="form-control" name="team">
+            {% for team_ in teams %}
+            <option value="{{ team_['id'] }}">{{ team_['name'] }}</option>
+            {% end %}
+        </select>
+    </div>
+    {% end %}
+
+    <div class="form-group">
+        <label for="file">動画ファイル</label>
+        <input type="file" id="file" name="file" />
+    </div>
+
+    <input type="hidden" name="upload" value="upload" />
+    <button class="btn btn-primary" type="submit">アップロード</button>
+
+    {% if team != None %}
+    <a class="btn btn-default" href="{{ reverse_url('MovieIndex', team['id']) }}">戻る</a>
+    {% end %}
+</form>
+
+{% end block %}

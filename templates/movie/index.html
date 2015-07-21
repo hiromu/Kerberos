@@ -1,0 +1,26 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h2 class="pull-left"><a class="title" href="{{ reverse_url('TeamIndex', team['camp_id']) }}">{{ team['camp_name'] }}</a> - {{ team['name'] }}: 動画一覧</h2>
+<div class="pull-right add-button">
+    <a class="btn btn-info" href="{{ reverse_url('ApiUpload', team['id']) }}">追加</a>
+</div>
+<table class="table table-hover">
+    <tbody>
+        {% for movie in movies %}
+        <tr>
+            <td class="vert-align">#{{ movie['id'] }}</td>
+            <td class="vert-align">{{ movie['datetime'] }}</td>
+            <td>
+                <a class="btn btn-danger" href="{{ reverse_url('MovieDelete', movie['id']) }}" role="button">削除</a>
+            </td>
+            <td>
+                <a class="btn btn-primary" href="{{ reverse_url('MoviePreview', movie['id']) }}" role="button">詳細</a>
+            </td>
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+
+{% end block %}

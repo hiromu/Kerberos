@@ -1,0 +1,13 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h3>本当に「動画: {{ movie['camp_name'] }} - {{ movie['team_name'] }} / #{{ movie['id'] }}」を削除しますか？</h3>
+<form method="POST">
+    <div class="form-group">
+        <button class="btn btn-danger" name="delete" value="true">はい</button>
+        <a href="{{ reverse_url('MovieIndex', movie['team_id']) }}" class="btn btn-default">いいえ</a>
+    </div>
+</form>
+
+{% end block %}

@@ -1,0 +1,40 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h3>キャンプの追加</h3>
+
+{% if error != '' %}
+<div class="alert alert-danger">{{ error }}</div>
+{% end %}
+
+<form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <select class="form-control" id="place" name="place" onchange="select(1000)">
+            {% for place in places %}
+            <option value="{{ place['id'] }}">{{ place['name'] }}</option>
+            {% end %}
+            <option value="-1">追加</option>
+        </select>
+    </div>
+    <div class="form-group place">
+        <label for="placename">会場名</label>
+        <input type="text" class="form-control" id="placename" name="placename" />
+    </div>
+    <div class="form-group place">
+        <label for="background">背景画像</label>
+        <input type="file" id="background" name="background" />
+    </div>
+    <div class="form-group">
+        <label for="name">キャンプ名</label>
+        <input type="text" class="form-control" id="name" name="name" />
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" name="submit" value="submit">追加</button>
+        <a href="{{ reverse_url('CampIndex') }}" class="btn btn-default">キャンセル</a>
+    </div>
+</form>
+
+<script src="{{ static_url('js/camp.js') }}"></script>
+
+{% end block %}

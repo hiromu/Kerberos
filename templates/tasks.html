@@ -1,0 +1,44 @@
+{% if len(tasks) != 0 %}
+<h2>タスク一覧</h2>
+<table class="table table-hover">
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>#{{ task['id'] }}</td>
+
+            {% if 'name' in task %}
+            <td>{{ task['name'] }}</td>
+            {% end %}
+
+            {% if task['status'] == 0 %}
+            <td>待機中</td>
+            {% elif task['status'] == 1 %}
+            <td>実行中</td>
+            {% elif task['status'] == 2 %}
+            <td>成功</td>
+            {% else %}
+            <td>エラー</td>
+            {% end %}
+
+            {% if task['status'] == 2 %}
+            <td>
+                <a href="{{ static_url(task['message']) }}">{{ task['message'] }}</a>
+            </td>
+            {% else %}
+            <td>{{ task['message'] }}</td>
+            {% end %}
+
+            <td>{{ task['datetime'] }}</td>
+
+            {% if task['status'] == 0 %}
+            <td>
+                <a class="btn btn-danger" href="{{ reverse_url('TaskDelete', task['id']) }}">削除</a>
+            </td>
+            {% else %}
+            <td></td>
+            {% end %}
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+{% end %}

@@ -1,0 +1,13 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h3>本当に「チーム: {{ team['camp_name'] }} - {{ team['name'] }}」を削除しますか？</h3>
+<form method="POST">
+    <div class="form-group">
+        <button class="btn btn-danger" name="delete" value="true">はい</button>
+        <a href="{{ reverse_url('TeamIndex', team['id']) }}" class="btn btn-default">いいえ</a>
+    </div>
+</form>
+
+{% end block %}

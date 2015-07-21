@@ -1,0 +1,8 @@
+{% extends '../base.html' %}
+
+{% block contents %}
+
+<h3><a class="title" href="{{ reverse_url('MovieIndex', movie['team_id']) }}">{{ movie['camp_name'] }} - {{ movie['team_name'] }}</a> / #{{ movie['id'] }}</h3>
+<video class="preview" src="{{ static_url(movie['file']) }}" controls="controls" />
+
+{% end block %}
