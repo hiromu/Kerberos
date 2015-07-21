@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import commands
+import math
 import os
 import random
 import shutil
@@ -21,7 +22,7 @@ OUTPUTDIR = 'generate'
 FPS = 30
 RESOLUTION = (1280, 720)
 
-BPM = 145.5
+BPM = 145.0
 START = 190.4
 END = 297.98
 
@@ -29,12 +30,17 @@ SECTION = [64, 64, 32]
 MAXLEN = 4
 
 ZOOMOUT = 32
-MID = 16
+MID = 24
 CHANGE = FPS * 3
 RATIO = 9
 
 def animate(ratio, rmin, rmax, vinit, vend):
-    return vinit + (vend - vinit) * (ratio - rmin) / (rmax - rmin)
+    b = vinit
+    c = (vend - vinit)
+    t = ratio - rmin
+    d = rmax - rmin
+
+    return -c / 2 * (math.cos(math.pi * t / d) - 1) + b;
 
 def generate(files, tempdir):
     minimum = [len(files), None]
@@ -114,15 +120,15 @@ def generate(files, tempdir):
                 img.paste(paste, (RESOLUTION[0] * j, RESOLUTION[1] * k))
 
         if i < mid:
-            left = animate(i, frame, mid, RESOLUTION[0] * (RATIO / 2), 0)
-            right = animate(i, frame, mid, RESOLUTION[0] * (RATIO / 2 + 1), RESOLUTION[0] * RATIO)
-            top = animate(i, frame, mid, RESOLUTION[1] * (RATIO / 2), 0)
-            bottom = animate(i, frame, mid, RESOLUTION[1] * (RATIO / 2 + 1), RESOLUTION[1] * RATIO)
+            left = int(animate(i, frame, mid, RESOLUTION[0] * (RATIO / 2), 0))
+            right = int(animate(i, frame, mid, RESOLUTION[0] * (RATIO / 2 + 1), RESOLUTION[0] * RATIO))
+            top = int(animate(i, frame, mid, RESOLUTION[1] * (RATIO / 2), 0))
+            bottom = int(animate(i, frame, mid, RESOLUTION[1] * (RATIO / 2 + 1), RESOLUTION[1] * RATIO))
         else:
             left = 0
-            right = RESOLUTION[0] * RATIO
+            right = int(RESOLUTION[0] * RATIO)
             top = 0
-            bottom = RESOLUTION[1] * RATIO
+            bottom = int(RESOLUTION[1] * RATIO)
 
         img.crop((left, top, right, bottom)).resize(RESOLUTION).save(os.path.join(tempdir, '%05d.png' % i))
 
@@ -151,9 +157,7 @@ def generate_wrapper():
         cursor.execute('SELECT id, camp_id FROM tasks WHERE status <= 1 ORDER BY datetime ASC LIMIT 1')
         row = cursor.fetchone()
 
-        if row == None:
-            return
-        else:
+        if row != None:
             task_id = int(row['id'])
             camp_id = int(row['camp_id'])
 

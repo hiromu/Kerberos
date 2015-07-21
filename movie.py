@@ -49,7 +49,7 @@ class DeleteHandler(tornado.web.RequestHandler):
         cursor.execute('SELECT movies.team_id FROM movies WHERE id = ?', (movie_id, ))
         row = cursor.fetchone()
 
-        cursor.execute('DELETE FROM teams WHERE id = ?', (movie_id, ))
+        cursor.execute('DELETE FROM movies WHERE id = ?', (movie_id, ))
         self.application.db.commit()
 
         return self.redirect(self.reverse_url('MovieIndex', row['team_id']))
