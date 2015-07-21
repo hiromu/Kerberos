@@ -38,6 +38,7 @@ class Application(tornado.web.Application):
 
             tornado.web.url(r'/api/([0-9]+)?', api.ApiHandler),
             tornado.web.url(r'/api/upload/([0-9]+)?', api.UploadHandler, name = 'ApiUpload'),
+            tornado.web.url(r'/api/download/([0-9]+)?', api.DownloadHandler, name = 'ApiDownload'),
         ]
 
         settings = {

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <title>Project Kerberos</title>
+    </head>
+    <body>
+        {% for movie in movies %}
+        <a href="{{ url_base }}{{ static_url(movie['file']) }}">{{ movie['id'] }}</a>
+        {% end %}
+    </body>
+</html>

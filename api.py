@@ -67,3 +67,21 @@ class UploadHandler(tornado.web.RequestHandler):
                 return self.redirect(self.reverse_url('MovieIndex', team_id))
 
         return self.send_error(500)
+
+class DownloadHandler(tornado.web.RequestHandler):
+    def get(self, camp_id = None):
+        cursor = self.application.db.cursor()
+        cursor.row_factory = sqlite3.Row
+
+        url_base = '%s://%s' % (self.request.protocol, self.request.host)
+
+        if camp_id == None:
+            cursor.execute('SELECT id, name FROM camps')
+            camps = [dict(zip(row.keys(), row)) for row in cursor]
+
+            return self.render(os.path.join('api', 'download.html'), camps = camps, url_base = url_base)
+        else:
+            cursor.execute('SELECT movies.id AS id, movies.file AS file FROM movies LEFT JOIN teams ON movies.team_id = teams.id LEFT JOIN camps ON teams.camp_id = camps.id WHERE camps.id = ?', (camp_id, ))
+            movies = [dict(zip(row.keys(), row)) for row in cursor]
+
+            return self.render(os.path.join('api', 'download_list.html'), movies = movies, url_base = url_base)
