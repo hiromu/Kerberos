@@ -51,7 +51,7 @@ class AddHandler(tornado.web.RequestHandler):
                 return self.get('背景画像を設定してください')
 
             staticpath = os.path.join('images', str(uuid.uuid4()) + os.path.splitext(background['filename'])[1])
-            filepath = os.path.join(os.path.dirname(__name__), 'static', staticpath)
+            filepath = os.path.join(os.path.dirname(__file__), 'static', staticpath)
 
             with open(filepath, 'w') as handler:
                 handler.write(background['body'])
