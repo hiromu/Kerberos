@@ -60,7 +60,7 @@ class DeleteHandler(tornado.web.RequestHandler):
         cursor = self.application.db.cursor()
         cursor.row_factory = sqlite3.Row
 
-        cursor.execute('SELECT team_id FROM teams WHERE id = ?', (team_id, ))
+        cursor.execute('SELECT camp_id FROM teams WHERE id = ?', (team_id, ))
         row = cursor.fetchone()
 
         cursor.execute('DELETE FROM teams WHERE id = ?', (team_id, ))
