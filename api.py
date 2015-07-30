@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import commands
 import json
 import os
 import sqlite3
@@ -56,9 +57,14 @@ class UploadHandler(tornado.web.RequestHandler):
         staticpath = os.path.join('uploads', str(uuid.uuid4()) + os.path.splitext(movie['filename'])[1])
         filepath = os.path.join(os.path.dirname(__file__), 'static', staticpath)
             
-        with open(filepath, 'w') as handler:
-            handler.write(movie['body'])
-            self.application.db.execute('INSERT INTO movies (team_id, file, datetime) VALUES (?, ?, datetime(\'now\', \'localtime\'))', (team, staticpath))
+        handler = open(filepath, 'w')
+        handler.write(movie['body'])
+        handler.close()
+
+        thumbnail = os.path.join('thumbnails', str(uuid.uuid4()) + '.png')
+        result = commands.getstatusoutput('ffmpeg -i %s -ss 1 -vframes 1 -f image2 %s' % (filepath, os.path.join(os.path.dirname(__file__), 'static', thumbnail)))
+        if result[0] == 0:
+            self.application.db.execute('INSERT INTO movies (team_id, file, thumbnail, datetime) VALUES (?, ?, ?, datetime(\'now\', \'localtime\'))', (team, staticpath, thumbnail))
             self.application.db.commit()
 
             if upload == None:

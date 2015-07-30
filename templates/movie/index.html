@@ -11,11 +11,14 @@
         {% for movie in movies %}
         <tr>
             <td class="vert-align">#{{ movie['id'] }}</td>
-            <td class="vert-align">{{ movie['datetime'] }}</td>
             <td>
+                <img class="thumbnail" src="{{ static_url(movie['thumbnail']) }}" />
+            </td>
+            <td class="vert-align">{{ movie['datetime'] }}</td>
+            <td class="vert-align">
                 <a class="btn btn-danger" href="{{ reverse_url('MovieDelete', movie['id']) }}" role="button">削除</a>
             </td>
-            <td>
+            <td class="vert-align">
                 <a class="btn btn-primary" href="{{ reverse_url('MoviePreview', movie['id']) }}" role="button">詳細</a>
             </td>
         </tr>

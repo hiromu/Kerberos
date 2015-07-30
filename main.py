@@ -3,7 +3,7 @@
 # sqlite3> create table places (id integer primary key autoincrement, name text, image text);
 # sqlite3> create table camps (id integer primary key autoincrement, place_id integer, name text, foreign key(place_id) references places(id));
 # sqlite3> create table teams (id integer primary key autoincrement, camp_id integer, name text, foreign key(camp_id) references camps(id));
-# sqlite3> create table movies (id integer primary key autoincrement, team_id integer, file text, datetime text, foreign key(team_id) references teams(id));
+# sqlite3> create table movies (id integer primary key autoincrement, team_id integer, file text, thumbnail text, datetime text, foreign key(team_id) references teams(id));
 # sqlite3> create table tasks (id integer primary key autoincrement, camp_id integer, status integer, message text, datetime text, foreign key(camp_id) references camps(id));
 
 import os
@@ -53,5 +53,5 @@ class Application(tornado.web.Application):
 
 if __name__ == '__main__':
     app = Application()
-    app.listen(80)
+    app.listen(8080)
     tornado.ioloop.IOLoop.instance().start()

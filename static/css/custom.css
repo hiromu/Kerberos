@@ -18,3 +18,11 @@ video.preview {
 a.title, a.title:hover {
     text-decoration: none;
 }
+
+img.thumbnail {
+    margin: 10px;
+}
+
+.table img.thumbnail {
+    max-width: 300px;
+}

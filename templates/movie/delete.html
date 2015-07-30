@@ -3,6 +3,7 @@
 {% block contents %}
 
 <h3>本当に「動画: {{ movie['camp_name'] }} - {{ movie['team_name'] }} / #{{ movie['id'] }}」を削除しますか？</h3>
+<img class="thumbnail" src="{{ static_url(movie['thumbnail']) }}" />
 <form method="POST">
     <div class="form-group">
         <button class="btn btn-danger" name="delete" value="true">はい</button>
