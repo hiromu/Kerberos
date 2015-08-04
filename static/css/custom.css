@@ -21,6 +21,7 @@ a.title, a.title:hover {
 
 img.thumbnail {
     margin: 10px;
+    max-width: 100%;
 }
 
 .table img.thumbnail {
