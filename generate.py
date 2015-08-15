@@ -123,7 +123,19 @@ def generate(files, tempdir):
                 count += 1
                 frame = int(position * FPS)
 
-    matrix = [[(random.randint(0, len(files) - 1), random.randint(0, CHANGE - 1)) for i in xrange(RATIO)] for j in xrange(RATIO)]
+    matrix = [[(-1, random.randint(0, CHANGE - 1)) for i in xrange(RATIO)] for j in xrange(RATIO)]
+
+    for i in xrange(RATIO):
+        for j in xrange(RATIO):
+            while True:
+                target = random.randint(0, len(files) - 1)
+                for k, l in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    if 0 <= i + k < RATIO and 0 <= j + l < RATIO:
+                        if matrix[i + k][j + l][0] == target:
+                            break
+                else:
+                    matrix[i][j] = (target, matrix[i][j][1])
+                    break
 
     mid = int((position + 60 / BPM * MID) * FPS)
     position += 60 / BPM * ZOOMOUT
@@ -134,8 +146,17 @@ def generate(files, tempdir):
         for j in xrange(len(matrix)):
             for k in xrange(len(matrix[j])):
                 matrix[j][k] = (matrix[j][k][0], matrix[j][k][1] + 1)
+
                 if matrix[j][k][1] == CHANGE:
-                    matrix[j][k] = random.randint(0, len(files) - 1), 0
+                    while True:
+                        target = random.randint(0, len(files) - 1)
+                        for l, m in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                            if 0 <= j + l < RATIO and 0 <= k + m < RATIO:
+                                if matrix[j + l][k + m][0] == target:
+                                    break
+                        else:
+                            matrix[j][k] = target, 0
+                            break
 
                 paste = Image.open(os.path.join(tempdir, str(matrix[j][k][0]), '%05d.png' % (matrix[j][k][1] + 1)))
                 img.paste(paste, (RESOLUTION[0] * j, RESOLUTION[1] * k))
