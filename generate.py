@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import commands
+import json
 import math
 import os
 import random
@@ -43,6 +44,26 @@ def animate(ratio, rmin, rmax, vinit, vend):
     return -c / 2 * (math.cos(math.pi * t / d) - 1) + b;
 
 def generate(files, tempdir):
+    checked = []
+
+    for filename in files:
+        result = commands.getstatusoutput('ffprobe -print_format json -loglevel quiet -show_streams %s' % (os.path.join(STATICPATH, filename)))
+        if result[0] != 0:
+            raise Exception('Error %d: 不正なファイル (%s)' % (result[0], filename.encode('utf-8')))
+
+        metadata = json.loads(result[1])
+        minimum = 1e10
+        resolution = (0, 0)
+
+        for stream in metadata['streams']:
+            minimum = min(minimum, float(stream['duration']))
+            if stream['codec_type'] == 'video':
+                resolution = stream['coded_width'], stream['coded_height']
+
+        if minimum > max(60 / BPM * MAXLEN, CHANGE / FPS) and resolution == RESOLUTION:
+            checked.append(filename)
+
+    files = checked
     minimum = [len(files), None]
 
     def dfs(n, s, p):
@@ -179,7 +200,7 @@ def generate_wrapper():
         
             shutil.rmtree(tempdir)
         
-            cursor.execute('UPDATE tasks SET status = ?, message = ? WHERE id = ?', (status, res, task_id))
+            cursor.execute('UPDATE tasks SET status = ?, message = ? WHERE id = ?', (status, res.decode('utf-8'), task_id))
             connection.commit()
 
             continue
